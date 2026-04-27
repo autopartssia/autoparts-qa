@@ -1,3 +1,16 @@
+
+before(() => {
+  cy.clearCookies();
+  cy.clearLocalStorage();
+
+  // чтобы не отвлекали сторонние скрипты, которые могут запускать алерты и мешать тесту
+  cy.intercept('GET', 'https://www.googletagmanager.com/**',{ statusCode: 304 }).as('getGtm')
+  cy.intercept('GET', 'https://t.contentsquare.net/**',{ statusCode: 304 }).as('getContentsquare')
+  cy.intercept('GET', 'https://www.gstatic.com/**',{ statusCode: 304 }).as('getGstatic')
+  cy.intercept('GET', 'https://**.google-analytics.com/**',{ statusCode: 304 }).as('getGoogleAnalytics')
+});
+
+
 describe('XSS check on restore password forms', () => {
   const cases = [
     {
