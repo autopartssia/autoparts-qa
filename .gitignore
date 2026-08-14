@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 .vite/
 
 cypress.config.js
+cypress/videos
