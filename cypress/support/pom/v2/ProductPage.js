@@ -29,6 +29,9 @@ export class ProductPage extends Page {
         product: '.product__page-block',
         putToCartButton: '.products__cart-add-js',
         cartModal: '#popup__cart',
+        plus: '.cart__quantity-plus-js',
+        minus: '.cart__quantity-minus-js',
+        cartItem: '.popup__cart-item-js'
     };
 
     constructor(...args) {
@@ -40,9 +43,6 @@ export class ProductPage extends Page {
         return cy.get(this.selectors.putToCartButton, { timeout: 15000 });
     }
 
-    getCartModal() {
-        return cy.get(this.selectors.cartModal, { timeout: 15000 });
-    }
 
     // FIXME: Remove next:
     getProductButtonByText(text) {
@@ -51,11 +51,22 @@ export class ProductPage extends Page {
     getProductLinkByText(text) {
         return cy.get(this.selectors.product).contains('a', text, { timeout: 15000 });
     }
+
+    getCartModal() {
+        return cy.get(this.selectors.cartModal, { timeout: 15000 });
+    }
     getCartModalButtonByText(text) {
         return cy.get(this.selectors.cartModal).contains('button', text, { timeout: 15000 });
     }
     getCartModalLinkByText(text) {
         return cy.get(this.selectors.cartModal).contains('a', text, { timeout: 15000 });
+    }
+
+    getCartItemByText(text){
+        return cy.get(this.selectors.cartItem).first().contains(text, { timeout: 15000 })
+    }
+    getCartItemByText(text){
+        return cy.get(this.selectors.cartItem).first().contains(text, { timeout: 15000 })
     }
 }
 
