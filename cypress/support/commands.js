@@ -81,3 +81,43 @@ Cypress.Commands.add('goToCategory', (categoryPath) => {
 Cypress.Commands.add('goToSearchResults', (query) => {
   cy.visit(`/ru/search_text/${encodeURIComponent(query)}/`, { failOnStatusCode: false });
 });
+
+Cypress.Commands.add('injectPointer', () => {
+  return cy.window().then((win) => {
+    const pointer = win.document.createElement('div');
+
+    Object.assign(pointer.style, {
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      zIndex: '9999',
+      width: '0.5rem',
+      height: '0.5rem',
+      background: 'red',
+      pointerEvents: 'none',
+      borderRadius: '50%',
+      transition: 'all 0.8s ease-out',
+    });
+
+    win.document.body.appendChild(pointer);
+    return cy.wrap(pointer).as('pointer');
+  });
+});
+
+Cypress.Commands.add('movePointerIntoView', (selector) => {
+  return cy.window().then((win) => {
+    return cy.get(selector).then(($target) => {
+      const target = $target[0];
+
+      return cy.get('@pointer').then(([pointer]) => {
+        const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = target;
+        const [top, left] = [offsetTop + offsetHeight / 2, offsetLeft + offsetWidth / 2]
+
+        console.log('Moving pointer to', { top, left, pointer, target });
+        Object.assign(pointer.style, {
+          transform: `translate(${left}px, ${top}px)`
+        });
+      });
+    });
+  });
+});
